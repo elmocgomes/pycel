@@ -237,6 +237,13 @@ def odd(value):
 
 
 @excel_math_func
+def pmt(rate, nper, pv, fv=0, type_=0):
+    #  Excel reference: https://support.microsoft.com/en-us/office/
+    #   pv-function-23879d31-0e02-4321-be01-da16e8168cbd
+    return np.pmt(rate, nper, pv)
+
+    
+@excel_math_func
 def power(number, power):
     # Excel reference: https://support.microsoft.com/en-us/office/
     #   POWER-function-D3F2908B-56F4-4C3F-895A-07FB519C362A
