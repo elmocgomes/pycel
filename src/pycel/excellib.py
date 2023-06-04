@@ -438,8 +438,7 @@ def pi():
 @excel_math_func
 def pmt(rate, nper, pv, fv=0, type=None):
     # Excel reference: https://support.microsoft.com/en-us/office/
-    #   pmt-function-0214da64-9a63-4996-bc20-214433fa6441
-
+    #   pmt-function-0214da64-9a63-4996-bc20-2144
     if rate == 0:
         return -(fv + pv) / nper
 
