@@ -88,6 +88,88 @@ def date_from_int(datestamp):
 
     return date.year, date.month, date.day
 
+def date_from_serial_number(datestamp):
+    if datestamp == LEAP_1900_SERIAL_NUMBER:
+        # excel thinks 1900 is a leap year
+        return LEAP_1900_TUPLE
+
+    if datestamp == 0:
+        # excel thinks Jan 1900 starts at day 0
+        return 1900, 1, 0
+
+    date = DATE_ZERO + dt.timedelta(days=datestamp)
+    if datestamp < LEAP_1900_SERIAL_NUMBER:
+        date += dt.timedelta(days=1)
+
+    return date.year, date.month, date.day
+
+def date_to_serial_number(year, month, day):
+    if (year, month, day) == LEAP_1900_TUPLE:
+        return LEAP_1900_SERIAL_NUMBER
+
+    if (year, month, day) == (1900, 1, 0):
+        # excel thinks Jan 1900 starts at day 0
+        return 0
+
+    date = dt.datetime(year, month, day)
+    if date < DATE_ZERO:
+        date -= dt.timedelta(days=1)
+
+    return (date - DATE_ZERO).days
+
+def date_from_excel(datestamp):
+    if datestamp == LEAP_1900_SERIAL_NUMBER:
+        # excel thinks 1900 is a leap year
+        return LEAP_1900_TUPLE
+
+    if datestamp == 0:
+        # excel thinks Jan 1900 starts at day 0
+        return 1900, 1, 0
+
+    date = DATE_ZERO + dt.timedelta(days=datestamp)
+    if datestamp < LEAP_1900_SERIAL_NUMBER:
+        date += dt.timedelta(days=1)
+
+    return date.year, date.month, date.day
+
+def date_to_excel(year, month, day):
+    if (year, month, day) == LEAP_1900_TUPLE:
+        return LEAP_1900_SERIAL_NUMBER
+
+    if (year, month, day) == (1900, 1, 0):
+        # excel thinks Jan 1900 starts at day 0
+        return 0
+
+    date = dt.datetime(year, month, day)
+    if date < DATE_ZERO:
+        date -= dt.timedelta(days=1)
+
+    return (date - DATE_ZERO).days
+
+def date_from_serialnumber_with_microseconds(serialnumber):
+    at_hours = (serialnumber + MICROSECOND / 1.5) * 24
+    hours = math.floor(at_hours)
+    at_mins = (at_hours - hours) * 60
+    mins = math.floor(at_mins)
+    at_secs = (at_mins - mins) * 60
+    secs = math.floor(at_secs)
+    microseconds = (at_secs - secs) * 1E6
+    return hours % 24, mins, secs, int(microseconds - 0.5)
+
+def date_to_serialnumber_with_microseconds(year, month, day, hour, min, sec, microseconds):
+    if (year, month, day) == LEAP_1900_TUPLE:
+        return LEAP_1900_SERIAL_NUMBER
+
+    if (year, month, day) == (1900, 1, 0):
+        # excel thinks Jan 1900 starts at day 0
+        return 0
+
+    date = dt.datetime(year, month, day, hour, min, sec, microseconds)
+    if date < DATE_ZERO:
+        date -= dt.timedelta(days=1)
+
+    return (date - DATE_ZERO).days
+
 
 def time_from_serialnumber_with_microseconds(serialnumber):
     at_hours = (serialnumber + MICROSECOND / 1.5) * 24
@@ -418,10 +500,6 @@ def date(year, month_, day):
         return NUM_ERROR
     return result
 
-
-# def datedif(value):
-    # Excel reference: https://support.microsoft.com/en-us/office/
-    #   datedif-function-25dba1a4-2812-480b-84dd-8b32a451b35c
 
 
 class DateutilParserInfo(dateutil.parser.parserinfo):

@@ -54,6 +54,36 @@ def abs_(value1):
     #   ABS-function-3420200F-5628-4E8C-99DA-C99D7C87713C
     return abs(value1)
 
+@excel_math_func
+def acos(value):
+    # Excel reference: https://support.microsoft.com/en-us/office/
+    #   ACOS-function-239847d3-5b62-4e31-84c2-1f1d8256b0b8
+    return math.acos(value)
+
+
+@excel_math_func
+def acosh(value):
+    # Excel reference: https://support.microsoft.com/en-us/office/
+    #   ACOSH-function-239847d3-5b62-4e31-84c2-1f1d8256b0b8
+    return math.acosh(value)
+
+@excel_math_func
+def asin(value):
+    # Excel reference: https://support.microsoft.com/en-us/office/
+    #   ASIN-function-239847d3-5b62-4e31-84c2-1f1d8256b0b8
+    return math.asin(value)
+
+@excel_math_func
+def asinh(value):
+    # Excel reference: https://support.microsoft.com/en-us/office/
+    #   ASINH-function-239847d3-5b62-4e31-84c2-1f1d8256b0b8
+    return math.asinh(value)
+
+@excel_math_func
+def atan(value):
+    # Excel reference: https://support.microsoft.com/en-us/office/
+    #   ATAN-function-239847d3-5b62-4e31-84c2-1f1d8256b0b8
+    return math.atan(value)
 
 @excel_math_func
 def atan2_(x_num, y_num):
@@ -62,6 +92,24 @@ def atan2_(x_num, y_num):
 
     # swap arguments
     return math.atan2(y_num, x_num)
+
+@excel_math_func
+def atanh(value):
+    # Excel reference: https://support.microsoft.com/en-us/office/
+    #   ATANH-function-239847d3-5b62-4e31-84c2-1f1d8256b0b8
+    return math.atanh(value)
+
+
+@excel_math_func
+def averagea(*args):
+    # Excel reference: https://support.microsoft.com/en-us/office/
+    #   AVERAGEA-function-047BAC88-D466-426C-A32B-8F33EB960CF6
+    data = _numerics(*args, keep_bools=True)
+    if isinstance(data, str):
+        return data
+
+    # if no non numeric cells, return zero (is what excel does)
+    return np.mean(data) if data else 0
 
 
 @excel_math_func
@@ -93,6 +141,7 @@ def ceiling_math(number, significance=1, mode=0):
     return significance * math.ceil(number / significance)
 
 
+
 @excel_math_func
 def ceiling_precise(number, significance=1):
     # Excel reference: https://support.microsoft.com/en-us/office/
@@ -118,11 +167,87 @@ def conditional_format_ids(*args):
     return tuple(results)
 
 
+
+@excel_math_func
+def cos(value):
+    # Excel reference: https://support.microsoft.com/en-us/office/
+    #   COS-function-239847d3-5b62-4e31-84c2-1f1d8256b0b8
+    return math.cos(value)
+
+@excel_math_func
+def cosh(value):
+    # Excel reference: https://support.microsoft.com/en-us/office/
+    #   COSH-function-239847d3-5b62-4e31-84c2-1f1d8256b0b8
+    return math.cosh(value)
+
+@excel_math_func
+def cot(value):
+    # Excel reference: https://support.microsoft.com/en-us/office/
+    #   COT-function-239847d3-5b62-4e31-84c2-1f1d8256b0b8
+    return 1 / math.tan(value)
+
+@excel_math_func
+def coth(value):
+    # Excel reference: https://support.microsoft.com/en-us/office/
+    #   COTH-function-239847d3-5b62-4e31-84c2-1f1d8256b0b8
+    if value == 0:
+        return DIV0
+    return 1 / math.tanh(value)
+
+@excel_math_func
+def counta(*args):
+    # Excel reference: https://support.microsoft.com/en-us/office/
+    #   COUNTA-function-7dc98846-2bb9-4dec-bd8e-4fe8721fffc3
+    return len(_numerics(*args, keep_bools=True, to_number=lambda x: 1))
+
+@excel_math_func
+def countblank(*args):
+    # Excel reference: https://support.microsoft.com/en-us/office/
+    #   COUNTBLANK-function-5ebe6dcb-aa7f-4f38-824c-b0b0b0373bd0
+    return sum(1 for x in flatten(args) if x == '')
+
+
+@excel_math_func
+def csc(value):
+    # Excel reference: https://support.microsoft.com/en-us/office/
+    #   CSC-function-239847d3-5b62-4e31-84c2-1f1d8256b0b8
+    if value == 0:
+        return DIV0
+    return 1 / math.sin(value)
+
+@excel_math_func
+def csch(value):
+    # Excel reference: https://support.microsoft.com/en-us/office/
+    #   CSCH-function-239847d3-5b62-4e31-84c2-1f1d8256b0b8
+    if value == 0:
+        return DIV0
+    return 1 / math.sinh(value)
+
+@excel_math_func
+def degrees(value):
+    # Excel reference: https://support.microsoft.com/en-us/office/
+    #   DEGREES-function-239847d3-5b62-4e31-84c2-1f1d8256b0b8
+    return math.degrees(value)
+
+
 @excel_math_func
 def even(value):
     # Excel reference: https://support.microsoft.com/en-us/office/
     #   even-function-197b5f06-c795-4c1e-8696-3c3b8a646cf9
     return math.copysign(math.ceil(abs(value) / 2) * 2, value)
+
+
+@excel_math_func
+def exp_(value):
+    # Excel reference: https://support.microsoft.com/en-us/office/
+    #   EXP-function-239847d3-5b62-4e31-84c2-1f1d8256b0b8
+    return math.exp(value)
+
+@excel_math_func
+def exp(value):
+    # Excel reference: https://support.microsoft.com/en-us/office/
+    #   EXP-function-239847d3-5b62-4e31-84c2-1f1d8256b0b8
+    return math.exp(value)
 
 
 @excel_math_func
@@ -186,6 +311,25 @@ def floor_precise(number, significance=1):
     significance = abs(significance)
     return significance * math.floor(number / significance)
 
+@excel_math_func
+def gcd(*args):
+    # Excel reference: https://support.microsoft.com/en-us/office/
+    #   gcd-function-0b325ea3-6c1f-4a9d-9b1a-8bc8fbc998e0
+    args = _numerics(args, to_number=lambda x: int(x))
+    if isinstance(args, str):
+        return args
+    return np.gcd.reduce(args)
+
+
+@excel_math_func
+def lcm(*args):
+    # Excel reference: https://support.microsoft.com/en-us/office/
+    #   lcm-function-8d8c2d80-ec6a-4c08-bf71-0bb212e8e83e
+    args = _numerics(args, to_number=lambda x: int(x))
+    if isinstance(args, str):
+        return args
+    return np.lcm.reduce(args)
+
 
 @excel_math_func
 def int_(value1):
@@ -207,6 +351,46 @@ def log(number, base=10):
     #   LOG-function-4E82F196-1CA9-4747-8FB0-6C4A3ABB3280
     return math.log(number, base)
 
+@excel_math_func
+def log10(number):
+    # Excel reference: https://support.microsoft.com/en-us/office/
+    #   LOG10-function-9b6cd169-b6ee-406a-a97b-edf2a9dc24f3
+    return math.log10(number)
+
+@excel_math_func
+def log2(number):
+    # Excel reference: https://support.microsoft.com/en-us/office/
+    #   LOG2-function-9b6cd169-b6ee-406a-a97b-edf2a9dc24f3
+    return math.log2(number)
+
+@excel_math_func
+def logb(number, base=2):
+    # Excel reference: https://support.microsoft.com/en-us/office/
+    #   LOGB-function-9b6cd169-b6ee-406a-a97b-edf2a9dc24f3
+    return math.log(number, base)
+
+@excel_math_func
+def maxa(*args):
+    # Excel reference: https://support.microsoft.com/en-us/office/
+    #   MAXA-function-043EED9C-46A7-48D9-900C-80EDA63DB46C
+    data = _numerics(*args, keep_bools=True)
+    if isinstance(data, str):
+        return data
+
+    # if no non numeric cells, return zero (is what excel does)
+    return max(data) if data else 0
+
+@excel_math_func
+def mina(*args):
+    # Excel reference: https://support.microsoft.com/en-us/office/
+    #   MINA-function-043EED9C-46A7-48D9-900C-80EDA63DB46C
+    data = _numerics(*args, keep_bools=True)
+    if isinstance(data, str):
+        return data
+
+    # if no non numeric cells, return zero (is what excel does)
+    return min(data) if data else 0
+
 
 @excel_math_func
 def mod(number, divisor):
@@ -216,6 +400,15 @@ def mod(number, divisor):
         return DIV0
 
     return number % divisor
+
+@excel_math_func
+def mround(number, multiple):
+    # Excel reference: https://support.microsoft.com/en-us/office/
+    #   MROUND-function-8f0b8def-1fc7-4a7d-bb18-2c1fda9bce45
+    if multiple == 0:
+        return DIV0
+
+    return round(number / multiple) * multiple
 
 
 @excel_helper(cse_params=None, err_str_params=-1, number_params=0)
@@ -235,12 +428,28 @@ def odd(value):
     #   odd-function-deae64eb-e08a-4c88-8b40-6d0b42575c98
     return math.copysign(math.ceil((abs(value) - 1) / 2) * 2 + 1, value)
 
+@excel_math_func
+def pi():
+    # Excel reference: https://support.microsoft.com/en-us/office/
+    #   pi-function-237349d1-0c7e-4e29-9e28-7e11d28f0fc3
+    return math.pi
+
 
 @excel_math_func
-def pmt(rate, nper, pv, fv=0, type_=0):
-    #  Excel reference: https://support.microsoft.com/en-us/office/
-    #   pv-function-23879d31-0e02-4321-be01-da16e8168cbd
-    return np.pmt(rate, nper, pv)
+def pmt(rate, nper, pv, fv=0, type=None):
+    # Excel reference: https://support.microsoft.com/en-us/office/
+    #   pmt-function-0214da64-9a63-4996-bc20-214433fa6441
+
+    if rate == 0:
+        return -(fv + pv) / nper
+
+    if type is None:
+        type = 0
+
+    return (pv * rate * (1 + rate) ** nper + fv) / (
+        (1 + rate * type) * ((1 + rate) ** nper - 1)
+    )
+
 
     
 @excel_math_func
@@ -267,6 +476,24 @@ def pv(rate, nper, pmt, fv=0, type_=0):
         return 1 / (1 + rate) ** nper * (-fv - val)
     else:
         return -fv - pmt * nper
+
+@excel_math_func
+def radians(value):
+    # Excel reference: https://support.microsoft.com/en-us/office/
+    #   RADIANS-function-239847d3-5b62-4e31-84c2-1f1d8256b0b8
+    return math.radians(value)
+
+@excel_math_func
+def rand():
+    # Excel reference: https://support.microsoft.com/en-us/office/
+    #   RAND-function-2b977a09-1a3c-4892-aeab-0a2a4645633c
+    return np.random.random()
+
+@excel_math_func
+def randbetween(bottom, top):
+    # Excel reference: https://support.microsoft.com/en-us/office/
+    #   RANDBETWEEN-function-2a1de742-cca4-4a41-8b58-067075af9b61
+    return np.random.randint(bottom, top + 1)
 
 
 @excel_math_func
@@ -306,6 +533,21 @@ def roundup(number, num_digits):
     #   ROUNDUP-function-F8BC9B23-E795-47DB-8703-DB171D0C42A7
     return _round(number, num_digits, rounding=ROUND_UP)
 
+@excel_math_func
+def sec(value):
+    # Excel reference: https://support.microsoft.com/en-us/office/
+    #   SEC-function-239847d3-5b62-4e31-84c2-1f1d8256b0b8
+    if value == 0:
+        return DIV0
+    return 1 / math.cos(value)
+
+
+@excel_math_func
+def sech(value):
+    # Excel reference: https://support.microsoft.com/en-us/office/
+    #   SECH-function-239847d3-5b62-4e31-84c2-1f1d8256b0b8
+    return 1 / math.cosh(value)
+
 
 @excel_math_func
 def sign(value):
@@ -313,6 +555,26 @@ def sign(value):
     #   sign-function-109c932d-fcdc-4023-91f1-2dd0e916a1d8
     return -1 if value < 0 else int(bool(value))
 
+
+@excel_math_func
+def signif(number, num_digits):
+    # Excel reference: https://support.microsoft.com/en-us/office/
+    #   SIGNIF-function-9b6cd169-b6ee-406a-a97b-edf2a9dc24f3
+    return _round(number, num_digits, rounding=ROUND_HALF_UP)
+
+@excel_math_func
+def sinh(value):
+    # Excel reference: https://support.microsoft.com/en-us/office/
+    #   SINH-function-239847d3-5b62-4e31-84c2-1f1d8256b0b8
+    return math.sinh(value)
+
+@excel_math_func
+def sqrt(value):
+    # Excel reference: https://support.microsoft.com/en-us/office/
+    #   SQRT-function-9b6cd169-b6ee-406a-a97b-edf2a9dc24f3
+    if value < 0:
+        return NUM_ERROR
+    return math.sqrt(value)
 
 def sum_(*args):
     data = _numerics(*args)
@@ -383,6 +645,17 @@ def sumproduct(*args):
     # return the sum product
     return np.sum(np.prod(values, axis=0))
 
+@excel_math_func
+def tan(value):
+    # Excel reference: https://support.microsoft.com/en-us/office/
+    #   TAN-function-239847d3-5b62-4e31-84c2-1f1d8256b0b8
+    return math.tan(value)
+
+@excel_math_func
+def tanh(value):
+    # Excel reference: https://support.microsoft.com/en-us/office/
+    #   TANH-function-239847d3-5b62-4e31-84c2-1f1d8256b0b8
+    return math.tanh(value)
 
 @excel_math_func
 def trunc(number, num_digits=0):

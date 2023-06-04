@@ -175,6 +175,16 @@ def column(ref):
     else:
         return ref.col_idx
 
+@excel_helper
+def columns(*args):
+    # Excel reference: https://support.microsoft.com/en-us/office/
+    #   columns-function-4e8e7b4e-e603-43e8-b177-956088fa48ca
+    if not args:
+        return 0
+    if not list_like(args[0]):
+        return 1
+    return len(args[0][0])
+
 
 # def columns(value):
     # Excel reference: https://support.microsoft.com/en-us/office/
@@ -431,6 +441,16 @@ def row(ref):
             return tuple((c, ) for c in range(ref.start.row, ref.end.row + 1))
     else:
         return ref.row
+
+@excel_helper
+def rows(*args):
+    # Excel reference: https://support.microsoft.com/en-us/office/
+    #   rows-function-b592593e-3fc2-47f2-bec1-bda493811597
+    if not args:
+        return 0
+    if not list_like(args[0]):
+        return 1
+    return len(args[0])
 
 
 # def rows(value):
