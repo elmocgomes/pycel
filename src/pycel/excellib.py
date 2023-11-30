@@ -336,8 +336,41 @@ def int_(value1):
     # Excel reference: https://support.microsoft.com/en-us/office/
     #   INT-function-A6C4AF9E-356D-4369-AB6A-CB1FD9D343EF
     return math.floor(value1)
+    
+@excel_math_func
+def irr(values, guess=0.1):
+    """
+    Calculate the Internal Rate of Return (IRR).
 
+    :param values: Cash flows, where the initial investment is negative and subsequent cash flows are positive.
+    :type values: list or tuple
+    :param guess: Initial guess for the rate of return, defaults to 0.1.
+    :type guess: float, optional
+    :return: Internal Rate of Return (IRR)
+    :rtype: float
+    """
+    max_iteration = 1000
+    tolerance = 1e-6
 
+    # Function to calculate Net Present Value (NPV) for a given rate
+    def npv(rate):
+        return sum([cf / (1 + rate) ** i for i, cf in enumerate(values)])
+
+    # Initialize variables
+    rate = guess
+    for _ in range(max_iteration):
+        npv_value = npv(rate)
+
+        # Check if NPV is close to zero (within tolerance)
+        if abs(npv_value) < tolerance:
+            return rate
+
+        # Update rate using Newton's method
+        rate -= npv_value / sum([-i * cf / (1 + rate) ** (i + 1) for i, cf in enumerate(values)])
+
+    # If the iteration limit is reached, return None
+    return None
+    
 @excel_math_func
 def ln(arg):
     # Excel reference: https://support.microsoft.com/en-us/office/
